@@ -1,6 +1,6 @@
 --[[
 Copyright (c) 2010 Scott Vokes <vokes.s@gmail.com>
- 
+
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -35,7 +35,7 @@ local function trace(...) print(string.format(...)) end
 ---TAble-MAtching Lua Extension.
 --module("tamale")
 
-tamale = {VERSION = "1.2.1"}
+local tamale = {VERSION = "1.2.1"}
 
 tamale.DEBUG = false                   --Set to true to enable traces.
 
