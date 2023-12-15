@@ -33,11 +33,11 @@ local strmatch, tostring = string.match, tostring
 local function trace(...) print(string.format(...)) end
 
 ---TAble-MAtching Lua Extension.
-module("tamale")
+--module("tamale")
 
-VERSION = "1.2.1"
+tamale = {VERSION = "1.2.1"}
 
-DEBUG = false                   --Set to true to enable traces.
+tamale.DEBUG = false                   --Set to true to enable traces.
 
 local function sentinel(descr)
    return setmetatable({}, { __tostring=function() return descr end })
@@ -52,7 +52,7 @@ local function is_var(t) return getmetatable(t) == VAR end
 -- Any variables beginning with _ are ignored.
 -- @usage { "extract", {var"_", var"_", var"third", var"_" } }
 -- @usage A variable named "..." captures subsequent array-portion values.
-function var(name)
+function tamale.var(name)
    assert(type(name) == "string", "Variable name must be string")
    local ignore = (name:sub(1, 1) == "_")
    local rest = (name == "...")
@@ -64,7 +64,7 @@ end
 -- than ==. Any captures from the string match are appended to the
 -- capture table. Like var, this would probably be locally aliased,
 -- and used like { P"num (%d+)", handler }.
-function P(str)
+function tamale.P(str)
    return function(v)
              if type(v) == "string" then return strmatch(v, str) end
           end
@@ -73,7 +73,7 @@ end
 
 ---Default hook for match failure.
 -- @param val The unmatched value.
-function match_fail(val)
+function tamale.match_fail(val)
    return nil, "Match failed", val
 end
 
@@ -294,8 +294,8 @@ end
 --  being used as a sentinel value (e.g. "MAGIC_ID = {}"), list
 --  them here.
 --@usage spec.debug=true: Turn on debugging traces for the matcher.
-function matcher(spec)
-   local debug = spec.debug or DEBUG
+function tamale.matcher(spec)
+   local debug = spec.debug or tamale.DEBUG
    local ids = {}
    if spec.ids then
       for _,id in ipairs(spec.ids) do ids[id] = true end
@@ -338,7 +338,8 @@ function matcher(spec)
          end
       end
       if debug then trace(" -- Failed") end
-      local fail = spec.fail or match_fail
+      local fail = spec.fail or tamale.match_fail
       return fail(t)
    end         
 end
+return tamale
